@@ -23,10 +23,9 @@ In this tutorial you be able start use this tool, to create a top level design o
 ![](/docs/img/5.png)
 
 
-12. Use arrow from FSlib to connect ports. DO NOT USE STANDARD ARROWS!!! This is currently not supported
- Be sure that you connect arrow to port (green dot will display)\
-![](/docs/img/6.png)\
-
+12. Use standard arrow  to connect ports.  Be sure that you connect arrow to port (green dot will display)\
+Navigate cursor to port, wait few milliseconds. Then connect ports\
+![](/docs/img/6_1.png)\
 13. connect start of arrow to o_out port\
 ![](/docs/img/7.png)
 

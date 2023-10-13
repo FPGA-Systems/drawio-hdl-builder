@@ -376,6 +376,37 @@ function form_descriptions() {
    return descriptions
 }
 
+
+function form_wires_from_arrows() {
+   //require formed ports before use (run form_ports() before)
+   wires = [];
+   //arrows_drawio = getObjects(json, 'type', 'wire');
+arrows_drawio = get_arrows();
+   for (let i = 0; i < arrows_drawio.length; i++) {
+      wires_data = {
+         'id': '',
+         'parent_inst_id': '',
+         'source': '',
+         'target': '',
+         'range': ''
+      }
+
+      wires[i] = wires_data
+      wires[i].id = arrows_drawio[i].id;
+      wires[i].source = arrows_drawio[i].source;
+      wires[i].target = arrows_drawio[i].target;
+      wires[i].parent_inst_id = arrows_drawio[i].parent;
+
+
+      //range assign - arrow text is a new object, needs to find child of arrow
+      child = getObjects(json, 'parent', wires[i].id)
+      if (child.length > 0)
+         wires[i].range = child[0].value
+   }
+   return wires;
+}
+
+
 function form_wires() {
    //require formed ports before use (run form_ports() before)
    wires = [];
@@ -409,7 +440,9 @@ function form_instances() {
    instances = []
    instances_drawio = getObjects(json, 'type', 'instance');
    ports = form_ports();
-   wires = form_wires()
+   //wires = form_wires()
+   wires = form_wires_from_arrows();
+   
    parameters = form_parameters()
    descriptions = form_descriptions()
 
@@ -840,4 +873,10 @@ function replaceAllOneCharAtATime(inSource, inToReplace, inReplaceWith) {
       replaceCompareCharacter += currentCharacter;
    }
    return output;
+}
+
+function get_arrows(){
+   arrows = []
+   arrows = getObjects(json, 'source', '')
+   return arrows;
 }
