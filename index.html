@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawio Hierarchy Builder</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/all.css">
+</head>
+
+<body>
+
+    <p class="content" style="display:none"></p>
+    <div class="buttons">
+
+        <div class="file-select">
+            <input type="file" onchange="previewFile()" />
+        </div>
+        <input type="button" class="button-66" onclick="do_magic()" value="Do Magic" />
+        <input type="button" class="button-66" onclick="select_all()" value="Select All" />
+        <input type="button" class="button-66" onclick="clear_all()" value="Clear All" />
+        <input type="button" class="button-66" onclick="download_src()" value="Download" />
+
+    </div>
+
+    <pre class="code"></pre>
+
+    <div id="modules_list"></div>
+
+    <div id="div1"></div>
+
+    <footer class="footer">
+        
+        <!-- Social -->
+        <!--https://codepen.io/abdelrhmansaid/pen/OJRNOpQ -->
+
+        <div class="wrapper">
+            <a class="icon facebook" href="http://t.me/KeisN13" target="_blank">
+              <span class="tooltip">Report&nbsp;Issue</span>
+              <span><i class="fa-solid fa-bug"></i></span>
+            </a>
+            <a class="icon twitter" href="http://t.me/KeisN13" target="_blank">
+              <span class="tooltip">Suggest&nbsp;Feature</span>
+              <span><i class="fa-solid fa-lightbulb"></i></span>
+            </a>
+            <a class="icon instagram">
+              <span class="tooltip">Join&nbsp;Team</span>
+              <span><i class="fa-brands fa-teamspeak"></i></span>
+            </a>
+            <a class="icon github">
+              <span class="tooltip">Project&nbsp;Github</span>
+              <span><i class="fab fa-github"></i></span>
+            </a>
+            <a class="icon youtube" href="https://boosty.to/fpgasystems">
+              <span class="tooltip">Support&nbsp;Project</span>
+              <span><i class="fa-solid fa-mug-hot"></i></span>
+            </a>
+        </div>
+    </footer>
+
+    <script src="./js/xml2json.js"></script>
+    <script src="./js/functions.js"></script>
+    <script src="./js/all.js"></script>
+</body>
+
+</html>

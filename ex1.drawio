@@ -1,0 +1,161 @@
+<mxfile host="app.diagrams.net" modified="2023-03-18T15:55:14.405Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 YaBrowser/23.1.5.708 Yowser/2.5 Safari/537.36" etag="ym-ziGwq7qz6ZCZzZ870" compressed="false" version="21.0.8" type="device">
+  <diagram name="Page-1" id="G1qmHrcxCc8aLaHD61ae">
+    <mxGraphModel dx="730" dy="1975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <object label="uart_comm_top" type="instance" link="C:\Users\Michael Korobkov\Documents\fs\tools\block2hdl\README.md" id="_a_MIkEZenx45TcL6E2q-20">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;container=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;recursiveResize=0;allowArrows=1;connectable=0;autosize=0;movable=1;movableLabel=0;resizable=1;snapToPoint=0;enumerate=0;fixDash=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fillOpacity=50;" parent="1" vertex="1">
+            <mxGeometry x="1080" y="-170" width="1330" height="950" as="geometry">
+              <mxRectangle x="380" y="30" width="320" height="40" as="alternateBounds" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="uart_comm" type="module_name" id="_a_MIkEZenx45TcL6E2q-21">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;snapToPoint=1;" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1">
+            <mxGeometry y="920" width="1330" height="30" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="Kr0HC0wQQQ0e3V2QL4Pt-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="_a_MIkEZenx45TcL6E2q-20" source="_a_MIkEZenx45TcL6E2q-27" target="_a_MIkEZenx45TcL6E2q-42" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <object label="uart_rx_slow" type="port" port_direction="input" id="_a_MIkEZenx45TcL6E2q-27">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1">
+            <mxGeometry y="120" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="_a_MIkEZenx45TcL6E2q-34" value="Description" style="rounded=0;whiteSpace=wrap;html=1;container=1;fillColor=#d0cee2;strokeColor=#56517e;verticalAlign=top;points=[];recursiveResize=0;connectable=0;" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1" collapsed="1">
+          <mxGeometry y="790" width="320" height="30" as="geometry">
+            <mxRectangle y="790" width="320" height="110" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <object label="//&lt;br&gt;//Module description&lt;br&gt;//" type="description" id="_a_MIkEZenx45TcL6E2q-35">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;points=[];" parent="_a_MIkEZenx45TcL6E2q-34" vertex="1">
+            <mxGeometry y="25" width="320" height="85" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="_a_MIkEZenx45TcL6E2q-36" value="Default parameters" style="rounded=0;whiteSpace=wrap;html=1;container=1;fillColor=#d0cee2;strokeColor=#56517e;verticalAlign=top;points=[];recursiveResize=0;connectable=0;" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1" collapsed="1">
+          <mxGeometry y="760" width="320" height="30" as="geometry">
+            <mxRectangle y="760" width="320" height="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <object label="C_PARAMETER = 1234,&lt;br&gt;C_SOMTHING = 5678" type="default_parameters" id="_a_MIkEZenx45TcL6E2q-37">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;points=[];" parent="_a_MIkEZenx45TcL6E2q-36" vertex="1">
+            <mxGeometry y="30" width="320" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="clk" type="port" port_direction="input" id="_a_MIkEZenx45TcL6E2q-41">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1">
+            <mxGeometry y="80" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="rst" type="port" port_direction="input" id="_a_MIkEZenx45TcL6E2q-42">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1">
+            <mxGeometry y="100" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="mult_uart_tx_inst" type="instance" id="Kr0HC0wQQQ0e3V2QL4Pt-6">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;container=1;labelPosition=center;verticalLabelPosition=middle;align=center;verticalAlign=top;recursiveResize=0;allowArrows=1;connectable=0;autosize=0;movable=1;movableLabel=0;resizable=1;snapToPoint=0;enumerate=0;fixDash=1;fillColor=#eeeeee;strokeColor=#36393d;fillOpacity=50;glass=1;shadow=1;" parent="_a_MIkEZenx45TcL6E2q-20" vertex="1">
+            <mxGeometry x="910" y="212" width="320" height="370" as="geometry">
+              <mxRectangle x="380" y="30" width="320" height="40" as="alternateBounds" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="mult_uart_tx" type="module_name" id="Kr0HC0wQQQ0e3V2QL4Pt-7">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;snapToPoint=1;" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="300" width="320" height="30" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="uart_tx[7:0]" type="port" port_direction="output" id="Kr0HC0wQQQ0e3V2QL4Pt-11">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=right;fillColor=#ffe6cc;strokeColor=#d79b00;noLabel=0;snapToPoint=1;autosize=0;points=[[1,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry x="180" y="100" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="ready" type="port" port_direction="output" id="Kr0HC0wQQQ0e3V2QL4Pt-12">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;noLabel=0;snapToPoint=1;autosize=0;points=[[1,0.5,0,0,0]];flipH=1;" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="130" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="clk" type="port" port_direction="input" id="Kr0HC0wQQQ0e3V2QL4Pt-13">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="90" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="rst" type="port" port_direction="input" id="Kr0HC0wQQQ0e3V2QL4Pt-14">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="110" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="addr[3:0]" type="port" port_direction="input" id="Kr0HC0wQQQ0e3V2QL4Pt-15">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="150" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="data[7:0]" type="port" port_direction="input" id="Kr0HC0wQQQ0e3V2QL4Pt-16">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="170" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="Kr0HC0wQQQ0e3V2QL4Pt-18" value="Inst parameters" style="rounded=0;whiteSpace=wrap;html=1;container=1;fillColor=#d0cee2;strokeColor=#56517e;verticalAlign=top;points=[];recursiveResize=0;connectable=0;" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1" collapsed="1">
+          <mxGeometry y="30" width="320" height="30" as="geometry">
+            <mxRectangle y="30" width="320" height="110" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <object label=".PRESCALER(11200000),&lt;br&gt;.PARITY(&quot;Odd&quot;),&lt;br&gt;.STOP_BITS(2)" type="inst_parameters" id="Kr0HC0wQQQ0e3V2QL4Pt-19">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;points=[];" parent="Kr0HC0wQQQ0e3V2QL4Pt-18" vertex="1">
+            <mxGeometry y="25" width="320" height="85" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="Kr0HC0wQQQ0e3V2QL4Pt-20" value="Description" style="rounded=0;whiteSpace=wrap;html=1;container=1;fillColor=#d0cee2;strokeColor=#56517e;verticalAlign=top;points=[];recursiveResize=0;connectable=0;" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1" collapsed="1">
+          <mxGeometry y="250" width="320" height="30" as="geometry">
+            <mxRectangle y="250" width="320" height="110" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <object label="//&lt;br&gt;//Module description&lt;br&gt;//" type="description" id="Kr0HC0wQQQ0e3V2QL4Pt-21">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;points=[];" parent="Kr0HC0wQQQ0e3V2QL4Pt-20" vertex="1">
+            <mxGeometry y="25" width="320" height="85" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="Kr0HC0wQQQ0e3V2QL4Pt-22" value="Default parameters" style="rounded=0;whiteSpace=wrap;html=1;container=1;fillColor=#d0cee2;strokeColor=#56517e;verticalAlign=top;points=[];recursiveResize=0;connectable=0;" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1" collapsed="1">
+          <mxGeometry y="220" width="320" height="30" as="geometry">
+            <mxRectangle y="220" width="320" height="150" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <object label="C_PARAMETER = 1234,&lt;br&gt;C_SOMTHING = 5678" type="default_parameters" id="Kr0HC0wQQQ0e3V2QL4Pt-23">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;points=[];" parent="Kr0HC0wQQQ0e3V2QL4Pt-22" vertex="1">
+            <mxGeometry y="30" width="320" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="valid" type="port" port_direction="input" id="Kr0HC0wQQQ0e3V2QL4Pt-26">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;points=[[0,0.5,0,0,0]];" parent="Kr0HC0wQQQ0e3V2QL4Pt-6" vertex="1">
+            <mxGeometry y="190" width="140" height="20" as="geometry" />
+          </mxCell>
+        </object>
+        <object label="" type="wire" id="Kr0HC0wQQQ0e3V2QL4Pt-28">
+          <mxCell style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.007;exitY=0.525;exitDx=0;exitDy=0;exitPerimeter=0;" parent="_a_MIkEZenx45TcL6E2q-20" source="_a_MIkEZenx45TcL6E2q-41" target="Kr0HC0wQQQ0e3V2QL4Pt-13" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="570" y="150" as="sourcePoint" />
+              <mxPoint x="730" y="150" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="890" y="91" />
+                <mxPoint x="890" y="310" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" type="wire" id="Kr0HC0wQQQ0e3V2QL4Pt-29">
+          <mxCell style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.525;exitDx=0;exitDy=0;exitPerimeter=0;" parent="_a_MIkEZenx45TcL6E2q-20" source="_a_MIkEZenx45TcL6E2q-42" target="Kr0HC0wQQQ0e3V2QL4Pt-14" edge="1">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="560" y="109.5" as="sourcePoint" />
+              <mxPoint x="720" y="109.5" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="880" y="111" />
+                <mxPoint x="880" y="330" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
