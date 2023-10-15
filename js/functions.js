@@ -3,7 +3,7 @@ let dom = "empty";
 let json = "empty";
 
 var wires = [];
-
+var interfaces_wires = [];
 
 var tab4 = '    '
 var tab3 = '   '
@@ -16,6 +16,7 @@ var inst_content = {
 
 function do_magic() {
    create_json();
+   get_interface_conection()
    form_instances();
    gen_module_verilog(instances[0])
    form_webpage()
@@ -35,7 +36,7 @@ function get_modules() {
    return modules
 }
 
-function download_src(){
+function download_src() {
    checkedBoxes = document.querySelectorAll('input:checked');
    checkedBoxes.forEach(cb => {
       parent_div = cb.parentNode;
@@ -49,14 +50,14 @@ function download_src(){
    });
 }
 
-function select_all(){
+function select_all() {
    checkedBoxes = document.querySelectorAll('input[type=checkbox]:not(:checked)');
    checkedBoxes.forEach(cb => {
       cb.checked = true
    });
 }
 
-function clear_all(){
+function clear_all() {
    checkedBoxes = document.querySelectorAll('input:checked');
    checkedBoxes.forEach(cb => {
       cb.checked = false
@@ -79,10 +80,10 @@ function form_webpage() {
       const newDetails = document.createElement("details")
       const newSummary = document.createElement("summary")
       const newPre = document.createElement("pre")
-      const newCode  = document.createElement("code")
+      const newCode = document.createElement("code")
       const newCheckbox = document.createElement("input")
 
-      newCode.setAttribute("class","language-verilog")
+      newCode.setAttribute("class", "language-verilog")
       newDiv.setAttribute('style', 'display:flex; justify-content: space-between; width: 300px')
       newDiv.setAttribute('id', m.module_name)
       newCheckbox.setAttribute('type', 'checkbox')
@@ -149,9 +150,9 @@ function previewFile() {
 
    if (file) {
       reader.readAsText(file);
-      
+
    }
-   
+
 }
 
 function parseXml(xml) {
@@ -184,15 +185,15 @@ function create_json() {
    json = xml2json(dom);
    json = json.replace('\nundefined', '');
 
-   json = replaceAllOneCharAtATime(json, '("','(\\"' );
-   json = replaceAllOneCharAtATime(json, '( "','( \\"');
-   json = replaceAllOneCharAtATime(json, '(  "','(  \\"');
-   json = replaceAllOneCharAtATime(json, '(  "','(   \\"');
+   json = replaceAllOneCharAtATime(json, '("', '(\\"');
+   json = replaceAllOneCharAtATime(json, '( "', '( \\"');
+   json = replaceAllOneCharAtATime(json, '(  "', '(  \\"');
+   json = replaceAllOneCharAtATime(json, '(  "', '(   \\"');
 
-   json = replaceAllOneCharAtATime(json, '")','\\")');
-   json = replaceAllOneCharAtATime(json, '" )','\\" )');
-   json = replaceAllOneCharAtATime(json, '"  )','\\"  )');
-   json = replaceAllOneCharAtATime(json, '"   )','\\"   )');
+   json = replaceAllOneCharAtATime(json, '")', '\\")');
+   json = replaceAllOneCharAtATime(json, '" )', '\\" )');
+   json = replaceAllOneCharAtATime(json, '"  )', '\\"  )');
+   json = replaceAllOneCharAtATime(json, '"   )', '\\"   )');
 
    json = JSON.parse(json);
    return json
@@ -240,6 +241,7 @@ function form_ports() {
    for (let i = 0; i < ports_drawio.length; i++) {
 
       port_data = {
+         'full_name': '',
          'name': '',
          'first_index': '',
          'second_index': '',
@@ -251,6 +253,7 @@ function form_ports() {
       ports[i] = port_data;
 
       tmp = split_port_label(ports_drawio[i].label)
+      ports[i].full_name = ports_drawio[i].label
       ports[i].name = tmp.name;
       ports[i].first_index = tmp.first_index;
       ports[i].second_index = tmp.second_index;
@@ -271,10 +274,10 @@ function form_parameters_2() {
    default_parameters_drawio = getObjects(json, 'type', 'default_parameters');
    inst_parameters_drawio = getObjects(json, 'type', 'inst_parameters');
    instancies_drawio - getObjects(json, 'type', instances)
-   
+
    for (let i = 0; i < default_parameters_drawio.length; i++) {
-      
-    
+
+
    }
 
    for (let i = 0; i < instances_drawio.length; i++) {
@@ -315,7 +318,7 @@ function form_parameters() {
    default_parameters_drawio = getObjects(json, 'type', 'default_parameters');
    inst_parameters_drawio = getObjects(json, 'type', 'inst_parameters');
 
-   
+
 
    for (let i = 0; i < default_parameters_drawio.length; i++) {
       parameters_data = {
@@ -381,7 +384,7 @@ function form_wires_from_arrows() {
    //require formed ports before use (run form_ports() before)
    wires = [];
    //arrows_drawio = getObjects(json, 'type', 'wire');
-arrows_drawio = get_arrows();
+   arrows_drawio = get_arrows();
    for (let i = 0; i < arrows_drawio.length; i++) {
       wires_data = {
          'id': '',
@@ -390,6 +393,7 @@ arrows_drawio = get_arrows();
          'target': '',
          'range': ''
       }
+
 
       wires[i] = wires_data
       wires[i].id = arrows_drawio[i].id;
@@ -406,6 +410,102 @@ arrows_drawio = get_arrows();
    return wires;
 }
 
+function get_interfaces_declaration() {
+   var interfaces = [];
+
+   interfaces = getObjects(json, "type", 'interface')
+
+   //find declaration of interfaces. they will have a parent 1 - main list
+   k = 0
+   interface_declaration = []
+
+   for (let i = 0; i < interfaces.length; i++) {
+      if (interfaces[i].mxCell.parent == '1') {
+         interface_declaration[k] = interfaces[i]
+         k = k + 1
+      }
+   }
+
+   interface_declaration_data = []
+
+   //assign database of interface
+   for (let i = 0; i < interface_declaration.length; i++) {
+      interface_data = {
+         "name": "",
+         "id": "",
+         "from_id": "",
+         "to_id": "",
+         "from_ports_in": [],
+         "from_ports_out": [],
+         "to_ports_in": [],
+         "to_ports_out": []
+      }
+
+      interface_declaration_data[i] = interface_data
+
+      interface_declaration_data[i].name = interface_declaration[i].label;
+      interface_declaration_data[i].id = interface_declaration[i].id;
+
+      from_list = getObjects(json, "interface_dir", 'from')
+      for (let j = 0; j < from_list.length; j++) {
+         if (from_list[j].mxCell.parent == interface_declaration_data[i].id) {
+            interface_declaration_data[i].from_id = from_list[j].id
+         }
+      }
+
+      to_list = getObjects(json, "interface_dir", 'to')
+      for (let j = 0; j < to_list.length; j++) {
+         if (to_list[j].mxCell.parent == interface_declaration_data[i].id) {
+            interface_declaration_data[i].to_id = to_list[j].id
+         }
+      }
+
+      //assign ports to interface
+      ports = form_ports();
+
+      k = 0
+      for (let j = 0; j < ports.length; j++) {
+         if (ports[j].direction == 'input') {
+            if (ports[j].parent_inst_id == interface_declaration_data[i].from_id) {
+               interface_declaration_data[i].from_ports_in[k] = ports[j].full_name
+               k = k + 1
+            }
+         }
+      }
+
+      k = 0
+      for (let j = 0; j < ports.length; j++) {
+         if (ports[j].direction == 'output') {
+            if (ports[j].parent_inst_id == interface_declaration_data[i].from_id) {
+               interface_declaration_data[i].from_ports_out[k] = ports[j].full_name
+               k = k + 1
+            }
+         }
+      }
+
+      k = 0
+      for (let j = 0; j < ports.length; j++) {
+         if (ports[j].direction == 'input') {
+            if (ports[j].parent_inst_id == interface_declaration_data[i].to_id) {
+               interface_declaration_data[i].to_ports_in[k] = ports[j].full_name
+               k = k + 1
+            }
+         }
+      }
+
+      k = 0
+      for (let j = 0; j < ports.length; j++) {
+         if (ports[j].direction == 'output') {
+            if (ports[j].parent_inst_id == interface_declaration_data[i].to_id) {
+               interface_declaration_data[i].to_ports_out[k] = ports[j].full_name
+               k = k + 1
+            }
+         }
+      }
+   }
+
+   return interface_declaration_data
+}
 
 function form_wires() {
    //require formed ports before use (run form_ports() before)
@@ -436,13 +536,16 @@ function form_wires() {
    return wires;
 }
 
+
+
+
 function form_instances() {
    instances = []
    instances_drawio = getObjects(json, 'type', 'instance');
    ports = form_ports();
    //wires = form_wires()
    wires = form_wires_from_arrows();
-   
+
    parameters = form_parameters()
    descriptions = form_descriptions()
 
@@ -607,7 +710,7 @@ function gen_module_verilog(inst) {
    code = code + `module ${inst.module_name} `
    parameters = inst.default_parameters
    if (parameters == '') {
-      
+
    } else {
       code = code + ' #('
       parameters.forEach(parameter => {
@@ -637,6 +740,18 @@ function gen_module_verilog(inst) {
          code = code + `\n${tab4}` + `output [${port.first_index} : ${port.second_index}] ${port.name},`
       }
    });
+
+   // //interface_ports
+   // interface_ports = getObjects(json, 'type', 'interface_port')
+   // interface_ports.forEach(port => {
+   //    if(inst.id == port.mxCell.parent) {
+   //       tmp = split_port_label(port.label)
+   //       port_name = port.interface + "_" + tmp.name
+   //       code = code + `${tab4}${tab4}.${port_name}(  ),\n`
+         
+   //    }
+   // });
+
    //remove "," for last port
    code = code.substring(0, code.length - 1);
    code = code + '\n);\n\n\n';
@@ -653,6 +768,23 @@ function gen_module_verilog(inst) {
          }
       });
    });
+
+   // //wires for interfaces
+   // inst.children.forEach(child => {
+   //    if (interfaces_wires.length > 0){
+   //       interfaces_wires.forEach(wire => {
+   //          port = split_port_label(wire)
+   //          if (port.first_index == '') {
+   //             code = code + `${tab4}wire ${port.name};\n`
+   //          } else {
+   //             code = code + `${tab4}wire [ ${port.first_index} : ${port.second_index} ] ${port.name};\n`
+   //          }
+   //       });
+      
+   //    }
+   // });
+   
+
    code = code + '\n\n'
 
    //do children connection inside instance
@@ -699,9 +831,6 @@ function gen_module_verilog(inst) {
                }
             }
 
-            console.log(code)
-
-
          });
 
          //Outputs
@@ -725,6 +854,19 @@ function gen_module_verilog(inst) {
 
 
          });
+
+         // //interfaces
+         // interface_ports = getObjects(json, 'type', 'interface_port')
+         // interface_ports.forEach(port => {
+         //    if(child.id == port.mxCell.parent) {
+         //       tmp = split_port_label(port.label)
+         //       port_name = tmp.name
+         //       code = code + `${tab4}${tab4}.${port_name}( ${port.wire} ),\n`
+               
+         //    }
+
+         // });
+
          //remove "," for last port
          code = code.substring(0, code.length - 2);
          code = code + `\n${tab4});`
@@ -875,8 +1017,317 @@ function replaceAllOneCharAtATime(inSource, inToReplace, inReplaceWith) {
    return output;
 }
 
-function get_arrows(){
+function get_arrows() {
    arrows = []
    arrows = getObjects(json, 'source', '')
    return arrows;
+}
+
+function get_arrows_into_interface(interface_id) {
+   arrows_drawio = get_arrows()
+   arrows_into_interface = []
+   k = 0
+   for (let i = 0; i < arrows_drawio.length; i++) {
+      if (arrows_drawio[i].parent == interface_id) {
+         arrows_into_interface[k] = arrows_drawio[i]
+         k = k + 1
+      }
+   }
+   return arrows_into_interface
+}
+
+
+function get_interface_conection() {
+   arrows_drawio = get_arrows()
+   
+   interfaces = getObjects(json, "type", "interface");
+
+   interface_instances = [];
+   k = 0
+   for (let i = 0; i < interfaces.length; i++) {
+      if (interfaces[i].mxCell.parent != 1) {
+         interface_instances[k] = interfaces[i];
+         k = k + 1
+      }
+
+   }
+
+   //find interface arrows
+   interface_arrows = []
+   k = 0
+   for (let i = 0; i < arrows_drawio.length; i++) {
+      arrow_source = arrows_drawio[i].source;
+
+      for (let j = 0; j < interface_instances.length; j++) {
+         if (arrow_source == interface_instances[j].id) {
+            interface_arrows[k] = arrows_drawio[i]
+            k = k + 1
+         }
+      }
+   }
+
+   
+
+   interfaces_declaration = get_interfaces_declaration()
+   //this function insert into main json new fields of ports and arrows 
+
+   for (let i = 0; i < interface_arrows.length; i++) {
+      
+      source_interface_id = interface_arrows[i].source
+      source_interface_inst = getObjects(json, "id", source_interface_id)
+      source_inst_id = source_interface_inst[0].mxCell.parent
+
+      target_interface_id = interface_arrows[i].target
+      target_interface_inst = getObjects(json, "id", target_interface_id)
+      target_inst_id = target_interface_inst[0].mxCell.parent
+
+      declarated_interfaces = get_interfaces_declaration()
+      for (let n = 0; n < declarated_interfaces.length; n++) {
+         if (declarated_interfaces[n].name == source_interface_inst[0].label) {
+            interface_declaration_id = declarated_interfaces[n].id
+         }
+
+      }
+      arrows_into_interface = []
+      arrows_into_interface = get_arrows_into_interface(interface_declaration_id)
+
+      for (let n = 0; n < arrows_into_interface.length; n++) {
+         port_data = {
+            "id": "unique_port_id_",
+            "module" : "",
+            "label": "",
+            "type": "port",
+            "interface" : "",
+            "wire" : "",
+            "port_direction": "",
+            "mxCell": {
+               "parent": ""
+            }
+         }
+
+         port_source = port_data
+
+         port_data = {
+            "id": "unique_port_id_",
+            "module" : "",
+            "label": "",
+            "type": "port",
+            "interface" : "",
+            "wire" : "",
+            "port_direction": "",
+            "mxCell": {
+               "parent": ""
+            }
+         }
+         port_target = port_data
+
+         port_source.port_direction = "output"
+         port_target.port_direction = "input"
+
+         new_object_number = json.mxfile.diagram.mxGraphModel.root.object.length;
+         new_object_number2 = json.mxfile.diagram.mxGraphModel.root.object.length + 1;
+
+         port_source.id = port_source.id + new_object_number
+         port_target.id = port_target.id + new_object_number2
+         
+         arrow_source = arrows_into_interface[n].source
+         port = getObjects(json, "id", arrow_source)
+         port_parent = port[0].mxCell.parent
+         tmp = getObjects(json, "id", port_parent)
+
+         if(tmp[0].interface_dir == "from"){
+            port_source.mxCell.parent = source_inst_id
+            port_target.mxCell.parent = target_inst_id
+         }
+
+         if(tmp[0].interface_dir == "to"){
+            port_source.mxCell.parent = target_inst_id
+            port_target.mxCell.parent = source_inst_id
+         }
+
+
+         tmp = getObjects(json, "id", interface_declaration_id)
+         interface_name = tmp[0].label
+
+         tmp = arrows_into_interface[n].source
+         tmp = getObjects(json, "id", tmp)
+         port_source.label = interface_name + "_" + tmp[0].label
+
+         tmp = arrows_into_interface[n].target
+         tmp = getObjects(json, "id", tmp)
+         port_target.label = interface_name + "_" + tmp[0].label
+
+         json.mxfile.diagram.mxGraphModel.root.object[new_object_number]  = port_source
+         json.mxfile.diagram.mxGraphModel.root.object[new_object_number2] = port_target
+
+         arrow_data = {
+            "id" : "unique_arrow_id_",
+            "source" : "",
+            "target" : ""
+         }
+
+         arrow = arrow_data
+
+         new_object_number = json.mxfile.diagram.mxGraphModel.root.mxCell.length;
+         arrow.id = arrow.id + new_object_number
+         arrow.source = port_source.id
+         arrow.target = port_target.id
+         json.mxfile.diagram.mxGraphModel.root.mxCell[new_object_number] = arrow
+
+      }
+      
+
+      // interface_id = interface_arrows[i].source
+      // interface_inst = getObjects(json, "id", interface_id)
+
+      // declarated_interfaces = get_interfaces_declaration()
+      // interface_declaration = getObjects(declarated_interfaces, "name", interface_inst[0].label)
+
+      // interface_from_ports_in = interface_declaration[0].from_ports_in
+      // interface_from_ports_out = interface_declaration[0].from_ports_out
+      // interface_to_ports_in = interface_declaration[0].to_ports_in
+      // interface_to_ports_out = interface_declaration[0].to_ports_out
+
+      // instance = interface_inst[0].mxCell.parent
+      // t = getObjects(json, "id", instance)
+      // instance_label = t[0].label
+      // //place found ports to module instance. Add this info to main JSON database
+      // for (let j = 0; j < interface_from_ports_in.length; j++) {
+      //    port_in_data = {
+      //       "id": "unique_id_ports_",
+      //       "module" : "",
+      //       "label": "",
+      //       "type": "interface_port",
+      //       "interface" : "",
+      //       "wire" : "",
+      //       "port_direction": "input",
+      //       "mxCell": {
+      //          "parent": ""
+      //       }
+      //    }
+
+      //    new_object_number = json.mxfile.diagram.mxGraphModel.root.object.length; //length is bigger to 1 then index of array :)
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number] = port_in_data;
+
+
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].id += new_object_number
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].label = interface_from_ports_in[j];
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].mxCell.parent = instance
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].interface = interface_declaration[0].name
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].module = instance_label
+
+      //    //ADD WIRES
+      //    tmp = "";
+      //    tmp = split_port_label(interface_from_ports_in[j])
+      //    tmp2 = ""
+      //    tmp2 = getObjects(json, "id", instance);
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].wire = tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name
+         
+      // }
+
+      // //place found ports to module instance. Add this info to main JSON database
+      // for (let j = 0; j < interface_from_ports_out.length; j++) {
+      //    port_out_data = {
+      //       "id": "unique_id_ports_",
+      //       "module" : "",
+      //       "label": "",
+      //       "type": "interface_port",
+      //       "interface" : "",
+      //       "port_direction": "output",
+      //       "mxCell": {
+      //          "parent": ""
+      //       }
+      //    }
+
+      //    new_object_number = json.mxfile.diagram.mxGraphModel.root.object.length
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number] = port_out_data;
+
+
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].id += new_object_number
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].label = interface_from_ports_out[j];
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].mxCell.parent = instance
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].interface = interface_declaration[0].name
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].module = instance_label
+
+      //    //ADD WIRES
+      //    tmp = "";
+      //    tmp = split_port_label(interface_from_ports_out[j])
+      //    tmp2 = ""
+      //    tmp2 = getObjects(json, "id", instance);
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].wire = tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name
+      //    interfaces_wires.push(tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name);
+      // }
+
+      // for (let j = 0; j < interface_to_ports_in.length; j++) {
+      //    port_in_data = {
+      //       "id": "unique_id_ports_",
+      //       "module" : "",
+      //       "label": "",
+      //       "type": "interface_port",
+      //       "interface" : "",
+      //       "wire" : "",
+      //       "port_direction": "input",
+      //       "mxCell": {
+      //          "parent": ""
+      //       }
+      //    }
+
+      //    new_object_number = json.mxfile.diagram.mxGraphModel.root.object.length
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number] = port_in_data;
+
+
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].id += new_object_number
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].label = interface_to_ports_in[j];
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].mxCell.parent = instance
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].interface = interface_declaration[0].name
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].module = instance_label
+         
+      //    //ADD WIRES
+      //    tmp = "";
+      //    tmp = split_port_label(interface_to_ports_in[j])
+      //    tmp2 = ""
+      //    tmp2 = getObjects(json, "id", instance);
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].wire = tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name
+
+
+      // }
+
+      // for (let j = 0; j < interface_to_ports_out.length; j++) {
+      //    port_out_data = {
+      //       "id": "unique_id_ports_",
+      //       "module" : "",
+      //       "label": "",
+      //       "type": "interface_port",
+      //       "interface" : "",
+      //       "wire" : "",
+      //       "port_direction": "output",
+      //       "mxCell": {
+      //          "parent": ""
+      //       }
+      //    }
+
+      //    new_object_number = json.mxfile.diagram.mxGraphModel.root.object.length
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number] = port_out_data;
+
+
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].id += new_object_number
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].label = interface_to_ports_out[j];
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].mxCell.parent = instance
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].interface = interface_declaration[0].name
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].module = instance_label
+         
+      //    //ADD WIRES
+      //    tmp = "";
+      //    tmp = split_port_label(interface_to_ports_out[j])
+      //    tmp2 = ""
+      //    tmp2 = getObjects(json, "id", instance);
+      //    json.mxfile.diagram.mxGraphModel.root.object[new_object_number].wire = tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name
+
+      //    interfaces_wires.push(tmp2[0].label + "_" + interface_declaration[0].name + "_" + tmp.name);
+
+      // }
+
+   }   
+
+   
 }
